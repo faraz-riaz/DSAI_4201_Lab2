@@ -5,6 +5,7 @@ from gensim.models import Word2Vec
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import pickle
+import os
 
 # Set page configuration
 st.set_page_config(
@@ -13,15 +14,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Download NLTK data at startup
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt')
-try:
-    nltk.data.find('corpora/stopwords')
-except LookupError:
-    nltk.download('stopwords')
+nltk.data.path.append(os.path.join(os.path.dirname(__file__), "nltk_data"))
 
 # Add title and description
 st.title("📚 Document Retrieval System")

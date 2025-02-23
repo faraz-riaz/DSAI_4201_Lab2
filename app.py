@@ -13,6 +13,16 @@ st.set_page_config(
     layout="wide"
 )
 
+# Download NLTK data at startup
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords')
+
 # Add title and description
 st.title("📚 Document Retrieval System")
 st.markdown("""
@@ -55,14 +65,7 @@ def retrieve_documents(query, word2vec_model, corpus_sentences, top_n=5):
     similarities.sort(key=lambda x: x[1], reverse=True)
     return similarities[:top_n]
 
-# Initialize NLTK
-@st.cache_resource
-def initialize_nltk():
-    nltk.download('punkt')
-    nltk.download('stopwords')
-
-# Load data and initialize NLTK
-initialize_nltk()
+# Load data
 corpus_sentences, model = load_data()
 
 if corpus_sentences is not None and model is not None:
